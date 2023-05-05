@@ -19,6 +19,7 @@
 		30A94A9C2A05C46A00AB78C9 /* VideoPlayViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30A94A9B2A05C46A00AB78C9 /* VideoPlayViewController.swift */; };
 		30A94A9E2A05C48F00AB78C9 /* NewConversationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30A94A9D2A05C48F00AB78C9 /* NewConversationViewController.swift */; };
 		30A94AA02A05C49F00AB78C9 /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30A94A9F2A05C49F00AB78C9 /* ProfileViewController.swift */; };
+		30A94AA32A05CCD900AB78C9 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30A94AA22A05CCD900AB78C9 /* Extensions.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -36,6 +37,7 @@
 		30A94A9B2A05C46A00AB78C9 /* VideoPlayViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoPlayViewController.swift; sourceTree = "<group>"; };
 		30A94A9D2A05C48F00AB78C9 /* NewConversationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewConversationViewController.swift; sourceTree = "<group>"; };
 		30A94A9F2A05C49F00AB78C9 /* ProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
+		30A94AA22A05CCD900AB78C9 /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -111,6 +113,7 @@
 			children = (
 				30A94A7E2A05C0D700AB78C9 /* SceneDelegate.swift */,
 				30A94A7C2A05C0D700AB78C9 /* AppDelegate.swift */,
+				30A94AA22A05CCD900AB78C9 /* Extensions.swift */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -209,6 +212,7 @@
 				30A94A9E2A05C48F00AB78C9 /* NewConversationViewController.swift in Sources */,
 				30A94A982A05C43800AB78C9 /* RegisterViewController.swift in Sources */,
 				30A94A812A05C0D700AB78C9 /* ConversationViewController.swift in Sources */,
+				30A94AA32A05CCD900AB78C9 /* Extensions.swift in Sources */,
 				30A94A7D2A05C0D700AB78C9 /* AppDelegate.swift in Sources */,
 				30A94AA02A05C49F00AB78C9 /* ProfileViewController.swift in Sources */,
 				30A94A7F2A05C0D700AB78C9 /* SceneDelegate.swift in Sources */,
