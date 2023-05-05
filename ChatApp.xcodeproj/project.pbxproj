@@ -80,9 +80,8 @@
 		30A94A902A05C27900AB78C9 /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				30A94AA12A05C63C00AB78C9 /* Login */,
 				30A94A802A05C0D700AB78C9 /* ConversationViewController.swift */,
-				30A94A952A05C42100AB78C9 /* LoginViewController.swift */,
-				30A94A972A05C43800AB78C9 /* RegisterViewController.swift */,
 				30A94A992A05C45600AB78C9 /* PhotoViewerViewController.swift */,
 				30A94A9B2A05C46A00AB78C9 /* VideoPlayViewController.swift */,
 				30A94A9D2A05C48F00AB78C9 /* NewConversationViewController.swift */,
@@ -123,6 +122,15 @@
 				30A94A822A05C0D700AB78C9 /* Main.storyboard */,
 			);
 			path = Storyboards;
+			sourceTree = "<group>";
+		};
+		30A94AA12A05C63C00AB78C9 /* Login */ = {
+			isa = PBXGroup;
+			children = (
+				30A94A952A05C42100AB78C9 /* LoginViewController.swift */,
+				30A94A972A05C43800AB78C9 /* RegisterViewController.swift */,
+			);
+			path = Login;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
