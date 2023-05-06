@@ -72,6 +72,12 @@ class LoginViewController: UIViewController {
         
         // go to the Register View
         navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Register", style: .done, target: self, action: #selector(didTapRegister))
+        
+        loginButton.addTarget(self, action: #selector(loginButtonTapped), for: .touchUpInside)
+        emailField.delegate = self
+        passwordField.delegate = self
+        
+        
         // add subviews
         view.addSubview(scrollView)
         scrollView.addSubview(imageView)
@@ -94,21 +100,38 @@ class LoginViewController: UIViewController {
         loginButton.frame = CGRect(x: 30, y: passwordField.bottom+10, width: scrollView.width-60, height: 52)
     }
     
+    @objc private func loginButtonTapped() {
+        // ensure the textFields are not empty and password is over 6 letters long
+        guard let email = emailField.text, let password = passwordField.text, !email.isEmpty, !password.isEmpty, password.count >= 6 else{
+            alertUseLoginError()
+            return
+        }
+        
+        // firebase login
+                
+    }
+    
+    func alertUseLoginError() {
+        let alert = UIAlertController(title: "Oops!", message: "Please enter all the valid information to proceed.", preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "Dissmiss", style: .cancel, handler: nil))
+        present(alert, animated: true)
+    }
+    
     @objc private func didTapRegister(){
         let vc = RegisterViewController()
         vc.title = "Create Account"
         navigationController?.pushViewController(vc, animated: true)
     }
-    
+}
 
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
+extension LoginViewController: UITextFieldDelegate {
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        if textField == emailField {
+            passwordField.becomeFirstResponder()
+        }
+        else if textField == passwordField{
+            loginButtonTapped()
+        }
+        return true
     }
-    */
-
 }
