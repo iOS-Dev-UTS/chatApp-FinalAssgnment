@@ -19,7 +19,7 @@ class RegisterViewController: UIViewController {
     
     private let imageView: UIImageView = {
         let imageView = UIImageView()
-        imageView.image = UIImage(systemName: "person")
+        imageView.image = UIImage(systemName: "person.fill")
         imageView.tintColor = .gray
         imageView.contentMode = .scaleAspectFit
         imageView.layer.masksToBounds = true
@@ -167,8 +167,14 @@ class RegisterViewController: UIViewController {
             return
         }
         
-        // firebase login
-        FirebaseAuth.Auth.auth().createUser(withEmail: email, password: password, completion: {authResult, error in
+        // Firebase Log In with email and password
+        FirebaseAuth.Auth.auth().createUser(withEmail: email, password: password, completion: {[weak self] authResult, error in
+            
+            // pass RegisterViewController instance as weak self to avoid circular reference
+            // make sure weak self is not null
+            guard let strongSelf = self else {
+                return
+            }
             guard let result = authResult, error == nil else{
                 print("error curating use ")
                 return
@@ -176,6 +182,9 @@ class RegisterViewController: UIViewController {
             }
             let user = result.user
             print("created user: \(user)")
+            
+            // Go to Conversation screen
+            strongSelf.navigationController?.dismiss(animated: true, completion: nil)
         })
     }
     
