@@ -178,7 +178,7 @@ class RegisterViewController: UIViewController {
             guard let strongSelf = self else {
                 return
             }
-            
+            print(exists)
             guard !exists else{
                 print("existing")
                 // user already exists

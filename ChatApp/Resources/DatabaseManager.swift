@@ -26,13 +26,16 @@ extension DatabaseManager {
         // Convert to the safe email
         var validEmail = email.replacingOccurrences(of: ".", with: "-")
         validEmail = validEmail.replacingOccurrences(of: "@", with: "-")
-        
         database.child(validEmail).observeSingleEvent(of: .value, with: {snapshot in
             guard snapshot.value as? String != nil else {
+                // doesn't exist
                 completion(false)
                 return
             }
-            completion(  true)
+            // exists
+            // doesn't come here even though it's already exists!!!
+            print("should be here")
+            completion(true)
         })
          
     }
