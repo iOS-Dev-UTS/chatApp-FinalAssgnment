@@ -13,17 +13,18 @@ class ConversationViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .red
+        
     }
     
     override func viewDidAppear(_ animated: Bool){
         super.viewDidAppear(animated)
         
+        // if the user hasn't logged in, let them go to the Login view
         validateAuth()
     }
     
     private func validateAuth() {
         if FirebaseAuth.Auth.auth().currentUser == nil {
-            // if the user hasn't logged in, let them go to the Login view
             let vc = LoginViewController()
             let nav = UINavigationController(rootViewController: vc)
             nav.modalPresentationStyle = .fullScreen
