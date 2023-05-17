@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		302A127F2A11C755000C037B /* DatabaseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 302A127E2A11C755000C037B /* DatabaseManager.swift */; };
 		30A94A7D2A05C0D700AB78C9 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30A94A7C2A05C0D700AB78C9 /* AppDelegate.swift */; };
 		30A94A7F2A05C0D700AB78C9 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30A94A7E2A05C0D700AB78C9 /* SceneDelegate.swift */; };
 		30A94A812A05C0D700AB78C9 /* ConversationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30A94A802A05C0D700AB78C9 /* ConversationViewController.swift */; };
@@ -25,6 +26,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		302A127E2A11C755000C037B /* DatabaseManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabaseManager.swift; sourceTree = "<group>"; };
 		30A94A792A05C0D700AB78C9 /* ChatApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ChatApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		30A94A7C2A05C0D700AB78C9 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		30A94A7E2A05C0D700AB78C9 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -124,6 +126,7 @@
 				30A94A7E2A05C0D700AB78C9 /* SceneDelegate.swift */,
 				30A94A7C2A05C0D700AB78C9 /* AppDelegate.swift */,
 				30A94AA22A05CCD900AB78C9 /* Extensions.swift */,
+				302A127E2A11C755000C037B /* DatabaseManager.swift */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -280,6 +283,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				30A94A962A05C42100AB78C9 /* LoginViewController.swift in Sources */,
+				302A127F2A11C755000C037B /* DatabaseManager.swift in Sources */,
 				30A94A9C2A05C46A00AB78C9 /* VideoPlayViewController.swift in Sources */,
 				30A94A9E2A05C48F00AB78C9 /* NewConversationViewController.swift in Sources */,
 				30A94A982A05C43800AB78C9 /* RegisterViewController.swift in Sources */,
@@ -439,6 +443,8 @@
 				DEVELOPMENT_TEAM = 5WQTP6T7UV;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = ChatApp/Info.plist;
+				INFOPLIST_KEY_NSCameraUsageDescription = "Please allow access to take a profile picture.";
+				INFOPLIST_KEY_NSPhotoLibraryAddUsageDescription = "Please allow access to select a photo for your profile.";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
@@ -468,6 +474,8 @@
 				DEVELOPMENT_TEAM = 5WQTP6T7UV;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = ChatApp/Info.plist;
+				INFOPLIST_KEY_NSCameraUsageDescription = "Please allow access to take a profile picture.";
+				INFOPLIST_KEY_NSPhotoLibraryAddUsageDescription = "Please allow access to select a photo for your profile.";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
