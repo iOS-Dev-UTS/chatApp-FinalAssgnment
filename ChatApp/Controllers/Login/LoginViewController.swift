@@ -7,6 +7,8 @@
 
 import UIKit
 import FirebaseAuth
+import Firebase
+import GoogleSignIn
 
 class LoginViewController: UIViewController {
     
@@ -66,8 +68,11 @@ class LoginViewController: UIViewController {
         return button
     }()
     
+    private let googleLoginButton = GIDSignInButton()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         title = "Log in"
         view.backgroundColor = .white
         
@@ -85,6 +90,8 @@ class LoginViewController: UIViewController {
         scrollView.addSubview(emailField)
         scrollView.addSubview(passwordField)
         scrollView.addSubview(loginButton)
+        scrollView.addSubview(googleLoginButton)
+        googleLoginButton.addTarget(self, action: #selector(googleButtonTapped), for: .touchUpInside)
     }
     
     override func viewDidLayoutSubviews() {
@@ -99,6 +106,66 @@ class LoginViewController: UIViewController {
         passwordField.frame = CGRect(x: 30, y: emailField.bottom+10, width: scrollView.width-60, height: 52)
         
         loginButton.frame = CGRect(x: 30, y: passwordField.bottom+10, width: scrollView.width-60, height: 52)
+        
+        googleLoginButton.frame = CGRect(x: 30, y: loginButton.bottom+10, width: scrollView.width-60, height: 52)
+    }
+    
+    @objc private func googleButtonTapped() {
+        guard let clientID = FirebaseApp.app()?.options.clientID else { return }
+        
+        // Create Google Sign In configuration object.
+        let config = GIDConfiguration(clientID: clientID)
+        GIDSignIn.sharedInstance.configuration = config
+        
+        // Start the sign in flow!
+        GIDSignIn.sharedInstance.signIn(withPresenting: self) { [weak self] result, error in
+            // pass RegisterViewController instance as weak self to avoid circular reference
+            // make sure weak self is not null
+            guard let strongSelf = self else {
+                return
+            }
+            
+            guard error == nil else {
+                print("GIDSignInError: \(error!.localizedDescription)")
+                return
+            }
+            
+            guard let user = result?.user,
+                  let idToken = user.idToken?.tokenString
+            else {
+                return
+            }
+            
+            guard let email = user.profile?.email,
+                  let firstName = user.profile?.givenName,
+                  let lastName = user.profile?.familyName else {
+                return
+            }
+            
+            DatabaseManager.shared.isUserExists(with: email, completion: { exists in
+                if !exists{
+                    // insert to db
+                    DatabaseManager.shared.insertUser(with: ChatAppUser(firstName: firstName, lastName: lastName, emailAddress: email))
+                }
+            })
+            
+            let credential = GoogleAuthProvider.credential(withIDToken: idToken,
+                                                           accessToken: user.accessToken.tokenString)
+            FirebaseAuth.Auth.auth().signIn(with: credential) { (authResult, error) in
+                
+                guard authResult != nil, error == nil else {
+                    print("falied to log in with google cred.")
+                    return
+                }
+                print("successfully signed in with google cred.")
+            }
+            
+            // Go to Conversation screen
+            strongSelf.navigationController?.dismiss(animated: true, completion: nil)
+            
+            
+        }
+        
     }
     
     @objc private func loginButtonTapped() {
@@ -124,7 +191,7 @@ class LoginViewController: UIViewController {
             let user = result.user
             print("Logged in User: \(user)")
             
-            // Go to Conversation screen 
+            // Go to Conversation screen
             strongSelf.navigationController?.dismiss(animated: true, completion: nil)
         })
     }
@@ -140,7 +207,9 @@ class LoginViewController: UIViewController {
         vc.title = "Create Account"
         navigationController?.pushViewController(vc, animated: true)
     }
+    
 }
+
 
 extension LoginViewController: UITextFieldDelegate {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
@@ -152,4 +221,6 @@ extension LoginViewController: UITextFieldDelegate {
         }
         return true
     }
+    
 }
+
