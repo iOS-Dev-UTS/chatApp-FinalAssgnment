@@ -46,6 +46,25 @@ extension DatabaseManager {
             "first_name": user.firstName,
             "last_name": user.lastName
         ])
+        
+        self.database.child("users").observeSingleEvent(of: .value, with: { snapshot in
+            if var usersCollection = snapshot.value as? [[String: String]] {
+                //add to user dict
+                let newElement = [
+                    ["name": user.firstName + " " + user.lastName,
+                     "email": user.validEmail]
+                ]
+                usersCollection.append(contentsOf: newElement)
+                self.database.child("users").setValue(usersCollection)
+            } else {
+                //create dict
+                let newCollection: [[String: String]] = [
+                    ["name": user.firstName + " " + user.lastName,
+                     "email": user.validEmail]
+                ]
+                self.database.child("users").setValue(newCollection)
+            }
+        })
     }
 }
 
