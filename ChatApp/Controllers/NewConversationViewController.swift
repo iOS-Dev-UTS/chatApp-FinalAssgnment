@@ -65,8 +65,17 @@ extension NewConversationViewController: UISearchBarDelegate {
         if hasFetched {
             
         } else {
-            
+            DatabaseManager.shared.getAllUsers(completion: { [weak self] result in
+                switch result {
+                case .success(let usersCollection):
+                    self?.users = usersCollection
+                case .failure:
+                    print("Failed to get users")
+                }
+            })
         }
-        
     }
+
+    
+    
 }

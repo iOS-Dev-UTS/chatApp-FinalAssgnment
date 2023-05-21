@@ -66,6 +66,15 @@ extension DatabaseManager {
             }
         })
     }
+    
+    public func getAllUsers(completion: @escaping (Result<[[String: String]], Error>) -> Void) {
+        database.child("users").observeSingleEvent(of: .value, with: {snapshot in
+            guard let value = snapshot.value as? [[String: String]] else {
+                return
+            }
+            completion(.success(value))
+        })
+    }
 }
 
 
