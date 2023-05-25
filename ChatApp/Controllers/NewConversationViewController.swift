@@ -53,7 +53,7 @@ class NewConversationViewController: UIViewController {
                                                             style: .done,
                                                             target: self,
                                                             action: #selector(dismissSelf))
-        //searchBar.becomeFirstResponder()
+        searchBar.becomeFirstResponder()
     }
     
     override func viewDidLayoutSubviews() {

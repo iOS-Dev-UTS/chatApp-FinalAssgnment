@@ -23,6 +23,7 @@
 		30A94AA32A05CCD900AB78C9 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30A94AA22A05CCD900AB78C9 /* Extensions.swift */; };
 		30A94AA52A062EA400AB78C9 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 30A94AA42A062EA400AB78C9 /* GoogleService-Info.plist */; };
 		BCC892CC2A1E4DE0002FD8C0 /* ChatViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCC892CB2A1E4DE0002FD8C0 /* ChatViewController.swift */; };
+		BCC892CE2A1E69D4002FD8C0 /* StorageManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCC892CD2A1E69D4002FD8C0 /* StorageManager.swift */; };
 		E9435E792595CB1483D1242C /* Pods_ChatApp.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 892D4BB93D9AA1018FB47E45 /* Pods_ChatApp.framework */; };
 /* End PBXBuildFile section */
 
@@ -48,6 +49,7 @@
 		892D4BB93D9AA1018FB47E45 /* Pods_ChatApp.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ChatApp.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		B51852BEE6D30FEF726D5C01 /* Pods-ChatApp.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ChatApp.release.xcconfig"; path = "Target Support Files/Pods-ChatApp/Pods-ChatApp.release.xcconfig"; sourceTree = "<group>"; };
 		BCC892CB2A1E4DE0002FD8C0 /* ChatViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatViewController.swift; sourceTree = "<group>"; };
+		BCC892CD2A1E69D4002FD8C0 /* StorageManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StorageManager.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -130,6 +132,7 @@
 				30A94A7C2A05C0D700AB78C9 /* AppDelegate.swift */,
 				30A94AA22A05CCD900AB78C9 /* Extensions.swift */,
 				302A127E2A11C755000C037B /* DatabaseManager.swift */,
+				BCC892CD2A1E69D4002FD8C0 /* StorageManager.swift */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -297,6 +300,7 @@
 				30A94A7F2A05C0D700AB78C9 /* SceneDelegate.swift in Sources */,
 				BCC892CC2A1E4DE0002FD8C0 /* ChatViewController.swift in Sources */,
 				30A94A9A2A05C45600AB78C9 /* PhotoViewerViewController.swift in Sources */,
+				BCC892CE2A1E69D4002FD8C0 /* StorageManager.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

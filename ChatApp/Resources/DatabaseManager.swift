@@ -41,11 +41,18 @@ extension DatabaseManager {
     }
     
     /// Inserts new user to the database
-    public func insertUser(with user: ChatAppUser){
+    public func insertUser(with user: ChatAppUser, completion: @escaping (Bool) -> Void){
         database.child(user.validEmail).setValue([
             "first_name": user.firstName,
             "last_name": user.lastName
-        ])
+        ], withCompletionBlock: {error, _ in
+            guard error == nil else {
+                print("Failed to write to Firebase")
+                completion(false)
+                return
+            }
+            completion(true)
+        })
         
         self.database.child("users").observeSingleEvent(of: .value, with: { snapshot in
             if var usersCollection = snapshot.value as? [[String: String]] {
@@ -89,5 +96,9 @@ struct ChatAppUser {
         var validEmail = emailAddress.replacingOccurrences(of: ".", with: "-")
         validEmail = validEmail.replacingOccurrences(of: "@", with: "-")
         return validEmail
+    }
+    
+    var profilePictureFileName: String {
+        return "\(validEmail)_profile_picture.png"
     }
 }
