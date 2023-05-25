@@ -16,6 +16,11 @@ final class DatabaseManager {
     
     private let database = Database.database().reference()
     
+    static func validEmail(emailAddress: String) -> String {
+        var validEmail = emailAddress.replacingOccurrences(of: ".", with: "-")
+        validEmail = validEmail.replacingOccurrences(of: "@", with: "-")
+        return validEmail
+    }
 }
 
 // MARK: - Account Management
@@ -51,36 +56,59 @@ extension DatabaseManager {
                 completion(false)
                 return
             }
-            completion(true)
-        })
-        
-        self.database.child("users").observeSingleEvent(of: .value, with: { snapshot in
-            if var usersCollection = snapshot.value as? [[String: String]] {
-                //add to user dict
-                let newElement = [
-                    ["name": user.firstName + " " + user.lastName,
-                     "email": user.validEmail]
-                ]
-                usersCollection.append(contentsOf: newElement)
-                self.database.child("users").setValue(usersCollection)
-            } else {
-                //create dict
-                let newCollection: [[String: String]] = [
-                    ["name": user.firstName + " " + user.lastName,
-                     "email": user.validEmail]
-                ]
-                self.database.child("users").setValue(newCollection)
-            }
+            
+            self.database.child("users").observeSingleEvent(of: .value, with: {snapshot in
+                if var usersCollection = snapshot.value as? [[String: String]] {
+                    //add to user dictionary if exists
+                    let newElement = [
+                        "name": user.firstName + " " + user.lastName,
+                        "email": user.validEmail
+                    ]
+                    
+                    usersCollection.append(newElement)
+                    
+                    self.database.child("users").setValue(usersCollection, withCompletionBlock: { error, _ in
+                        guard error == nil else{
+                            completion(false)
+                            return
+                        }
+                        
+                        completion(true)
+                    })
+                    
+                } else {
+                    //create user dictionary if not exists
+                    let newCollection: [[String: String]] = [
+                        [
+                            "name": user.firstName + " " + user.lastName,
+                            "email": user.validEmail
+                        ]
+                    ]
+                    self.database.child("users").setValue(newCollection, withCompletionBlock: { error, _ in
+                        guard error == nil else{
+                            completion(false)
+                            return
+                        }
+                        
+                        completion(true)
+                    })
+                }
+            })
         })
     }
     
     public func getAllUsers(completion: @escaping (Result<[[String: String]], Error>) -> Void) {
         database.child("users").observeSingleEvent(of: .value, with: {snapshot in
             guard let value = snapshot.value as? [[String: String]] else {
+                completion(.failure(DatabaseError.failedToFetch))
                 return
             }
             completion(.success(value))
         })
+    }
+    
+    public enum DatabaseError: Error {
+        case failedToFetch
     }
 }
 
