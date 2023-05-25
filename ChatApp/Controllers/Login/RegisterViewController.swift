@@ -13,7 +13,6 @@ class RegisterViewController: UIViewController {
     
     private let spinner = JGProgressHUD(style: .dark)
 
-    
     // container
     private let scrollView: UIScrollView = {
         let scrollView = UIScrollView()
@@ -285,5 +284,22 @@ extension RegisterViewController: UIImagePickerControllerDelegate, UINavigationC
     // if the user cancelled taking a photo or picture
     func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
         picker.dismiss(animated: true, completion: nil)
+    }
+    
+    //Dark Mode
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        updateAppearance()
+    }
+
+    func updateAppearance() {
+        let isDarkModeEnabled = DarkModeManager.shared.isDarkModeEnabled
+        if isDarkModeEnabled {
+            view.backgroundColor = .black
+            // Set other dark mode appearance
+        } else {
+            view.backgroundColor = .white
+            // Set other light mode appearance
+        }
     }
 }
