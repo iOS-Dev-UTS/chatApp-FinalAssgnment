@@ -225,6 +225,7 @@ class LoginViewController: UIViewController {
                 return
             }
             let user = result.user
+            UserDefaults.standard.set(email, forKey: "email")
             print("Logged in User: \(user)")
             
             // Go to Conversation screen
