@@ -10,25 +10,43 @@ import MessageKit
 import InputBarAccessoryView
 
 struct Message: MessageType {
-    var sender: MessageKit.SenderType
-    
-    var messageId: String
-    
-    var sentDate: Date
-    
-    var kind: MessageKit.MessageKind
-    
-    
+    public var sender: MessageKit.SenderType
+    public var messageId: String
+    public var sentDate: Date
+    public var kind: MessageKit.MessageKind
+}
+
+extension MessageKind {
+    var messageKindString: String {
+        switch self {
+        case .text(_):
+            return "text"
+        case .attributedText(_):
+            return "attributed_text"
+        case .photo(_):
+            return "photo"
+        case .video(_):
+            return "video"
+        case .location(_):
+            return "location"
+        case .emoji(_):
+            return "emoji"
+        case .audio(_):
+            return "audio"
+        case .contact(_):
+            return "contact"
+        case .linkPreview(_):
+            return "link_preview"
+        case .custom(_):
+            return "custom"
+        }
+    }
 }
 
 struct Sender: SenderType {
-    var photoURL: String
-    
-    var senderId: String
-    
-    var displayName: String
-    
-    
+    public var photoURL: String
+    public var senderId: String
+    public var displayName: String
 }
 
 class ChatViewController: MessagesViewController {
@@ -106,7 +124,7 @@ extension ChatViewController: InputBarAccessoryViewDelegate {
                                   sentDate: Date(),
                                   kind: .text(text))
             
-            DatabaseManager.shared.createNewConversation(with: otherUserEmail, firstMesage: message, completion: { success in
+            DatabaseManager.shared.createNewConversation(with: otherUserEmail, firstMessage: message, completion: { success in
                 if success {
                     print("message sent")
                 } else {
@@ -120,12 +138,16 @@ extension ChatViewController: InputBarAccessoryViewDelegate {
     }
     
     private func createMessageId() -> String? {
-        guard let currentUserEmail = UserDefaults.standard.value(forKey: "email") else {
+        guard let currentUserEmail = UserDefaults.standard.value(forKey: "email") as? String else {
             print("id error")
             return nil
         }
+        
+        let validEmail = DatabaseManager.validEmail(emailAddress: currentUserEmail)
+        
+        
         let dateString = Self.dateFormatter.string(from: Date())
-        let newId = "\(otherUserEmail)_\(currentUserEmail)_\(dateString)"
+        let newId = "\(otherUserEmail)_\(validEmail)_\(dateString)"
         print("created message id: \(newId)")
         return newId
     }
