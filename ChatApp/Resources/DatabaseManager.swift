@@ -84,6 +84,28 @@ extension DatabaseManager {
     }
 }
 
+extension DatabaseManager {
+    
+    public func createNewConversation(with otherUserEmail: String, firstMesage: Message, completion: @escaping (Bool) -> Void) {
+        
+    }
+    
+    public func getAllConversations(for email: String, completion: @escaping (Result<String, Error>) -> Void) {
+        
+    }
+    
+    public func getAllMessagesForConversation(with id: String, completion: @escaping (Result<String, Error>) -> Void) {
+        
+    }
+    
+    public func sendMessage(to conversation: String, message: Message, completion: @escaping (Bool) -> Void) {
+        
+    }
+    
+}
+
+
+
 
 struct ChatAppUser {
     let firstName: String
@@ -102,3 +124,5 @@ struct ChatAppUser {
         return "\(validEmail)_profile_picture.png"
     }
 }
+
+
