@@ -145,6 +145,8 @@ class LoginViewController: UIViewController {
                 return
             }
             
+            UserDefaults.standard.set(email, forKey: "email")
+            
             DatabaseManager.shared.isUserExists(with: email, completion: { exists in
                 if !exists{
                     let chatUser = ChatAppUser(firstName: firstName, lastName: lastName, emailAddress: email)
@@ -225,7 +227,9 @@ class LoginViewController: UIViewController {
                 return
             }
             let user = result.user
+
             UserDefaults.standard.set(email, forKey: "email")
+
             print("Logged in User: \(user)")
             
             // Go to Conversation screen
