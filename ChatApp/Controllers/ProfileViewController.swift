@@ -6,23 +6,43 @@
 //
 
 import UIKit
+import Firebase
 import FirebaseAuth
+import FirebaseStorage
 import GoogleSignIn
+import SDWebImage
+
+
+enum ProfileModelType {
+    case info
+}
+
+struct ProfileModel {
+    let modelType: ProfileModelType
+    let title: String
+    let handler: (() ->Void)?
+}
 
 class ProfileViewController: UIViewController {
     
     @IBOutlet var tableview: UITableView!
     
-    let data = ["Log Out"]
+    var data = [ProfileModel]()
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        tableview.register(ProfileTableViewCell.self, forCellReuseIdentifier: ProfileTableViewCell.identifier)
+        
+        
+        data.append(ProfileModel(modelType: .info, title: "Name: \(UserDefaults.standard.value(forKey: "name") as? String ?? "No Name")", handler: nil))
+        data.append(ProfileModel(modelType: .info, title: "Email: \(UserDefaults.standard.value(forKey: "email") as? String ?? "No Email")", handler: nil))
+        
         tableview.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
         tableview.delegate = self
         tableview.dataSource = self
         tableview.tableHeaderView = createTableHeader()
 
-        // Do any additional setup after loading the view.
     }
     
     func createTableHeader() -> UIView? {
@@ -48,7 +68,7 @@ class ProfileViewController: UIViewController {
         imageView.layer.cornerRadius = imageView.width/2
 
         headerView.addSubview(imageView)
-        
+
         StorageManager.shared.downloadURL(for: path, completion: { [weak self] result in
             switch result {
             case .success(let url):
@@ -81,38 +101,38 @@ extension ProfileViewController: UITableViewDelegate, UITableViewDataSource{
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
-        cell.textLabel?.text = data[indexPath.row]
-        cell.textLabel?.textAlignment = .center
-        cell.textLabel?.textColor = .red
+        let viewModel = data[indexPath.row]
+        let cell = tableView.dequeueReusableCell(withIdentifier: ProfileTableViewCell.identifier, for: indexPath) as! ProfileTableViewCell
+        
+        cell.setUp(with: viewModel)
         return cell
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
+        data[indexPath.row].handler?()
+    
     }
-//        let actionSheet = UIAlertController(title: "", message: "", preferredStyle: .actionSheet)
-//        actionSheet.addAction(UIAlertAction(title: "Log Out", style: .destructive, handler: { [weak self] _ in
-//            guard let strongSelf = self else {
-//                return
-//            }
-//
-//            // Log Out Google
-//            GIDSignIn.sharedInstance.signOut()
-//
-//            do {
-//                try FirebaseAuth.Auth.auth().signOut()
-//                let vc = LoginViewController()
-//                let nav = UINavigationController(rootViewController: vc)
-//                nav.modalPresentationStyle = .fullScreen
-//                strongSelf.present(nav, animated: true)
-//            } catch {
-//                print("Failed to Log Out")
-//            }
-//        }))
-//
-//        actionSheet.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
-//        present(actionSheet, animated: true)
-//
-//    }
 }
+
+class ProfileTableViewCell: UITableViewCell {
+    
+    static let identifier = "ProfileTableViewCell"
+    
+    private var viewModel: ProfileModel?
+    
+    public func setUp(with viewModel: ProfileModel) {
+        self.viewModel = viewModel
+        self.textLabel?.textAlignment = .left
+        selectionStyle = .none
+
+        self.textLabel?.text = viewModel.title
+        
+        if viewModel.modelType == .info{
+            
+        }
+    }
+  
+    }
+
+

@@ -49,7 +49,7 @@ extension DatabaseManager {
     public func insertUser(with user: ChatAppUser, completion: @escaping (Bool) -> Void){
         database.child(user.validEmail).setValue([
             "first_name": user.firstName,
-            "last_name": user.lastName
+            "last_name": user.lastName,
         ], withCompletionBlock: {error, _ in
             guard error == nil else {
                 print("Failed to write to Firebase")
@@ -275,7 +275,7 @@ struct ChatAppUser {
     let firstName: String
     let lastName: String
     let emailAddress: String
-    // let profilePicUrl: String
+    //let profilePicUrl: String
     
     // Insert safe email to insert
     var validEmail: String {
