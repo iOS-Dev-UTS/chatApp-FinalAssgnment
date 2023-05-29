@@ -35,6 +35,8 @@ class ProfileViewController: UIViewController {
         tableview.register(ProfileTableViewCell.self, forCellReuseIdentifier: ProfileTableViewCell.identifier)
         
         
+    
+
         data.append(ProfileModel(modelType: .info, title: "Name: \(UserDefaults.standard.value(forKey: "name") as? String ?? "No Name")", handler: nil))
         data.append(ProfileModel(modelType: .info, title: "Email: \(UserDefaults.standard.value(forKey: "email") as? String ?? "No Email")", handler: nil))
         
@@ -49,14 +51,15 @@ class ProfileViewController: UIViewController {
         guard let email = UserDefaults.standard.value(forKey: "email") as? String else {
             return nil
         }
-        
+       
+    
         let validEmail = DatabaseManager.validEmail(emailAddress: email)
         let filename = validEmail + "_profile_picture.png"
         
         let path = "images/" + filename
         
         let headerView = UIView(frame: CGRect(x: 0, y: 0, width: self.view.width, height: 300))
-        headerView.backgroundColor = .link
+        headerView.backgroundColor = .secondarySystemBackground
         
         let imageView = UIImageView(frame: CGRect(x: (headerView.width-150)/2, y: 75, width: 150, height: 150))
         
@@ -78,7 +81,9 @@ class ProfileViewController: UIViewController {
             }
         })
         
+        //tableview.reloadData()
         return headerView
+        
     }
     
     func downloadImage(imageView: UIImageView, url: URL) {
@@ -102,6 +107,7 @@ extension ProfileViewController: UITableViewDelegate, UITableViewDataSource{
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let viewModel = data[indexPath.row]
+   
         let cell = tableView.dequeueReusableCell(withIdentifier: ProfileTableViewCell.identifier, for: indexPath) as! ProfileTableViewCell
         
         cell.setUp(with: viewModel)
@@ -125,14 +131,15 @@ class ProfileTableViewCell: UITableViewCell {
         self.viewModel = viewModel
         self.textLabel?.textAlignment = .left
         selectionStyle = .none
-
-        self.textLabel?.text = viewModel.title
         
+        self.textLabel?.text = viewModel.title
         if viewModel.modelType == .info{
-            
+            //            let titleComponents = viewModel.title.components(separatedBy: ": ")
+            //            if titleComponents.count == 2 {
+            //                self.textLabel?.text = titleComponents[1]
+            //            } else {
+            //                self.textLabel?.text = viewModel.title
+            //            }
         }
     }
-  
-    }
-
-
+}
