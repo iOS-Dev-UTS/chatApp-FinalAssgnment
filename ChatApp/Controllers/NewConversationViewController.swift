@@ -6,10 +6,13 @@
 //
 
 import UIKit
+import JGProgressHUD
 
 class NewConversationViewController: UIViewController {
     
-   
+    private let spinner = JGProgressHUD(style: .dark)
+
+    public var completion: (([String: String]) -> (Void))?
     private var users = [[String: String]]()
     private var results = [[String: String]]()
     private var hasFetched = false
@@ -53,7 +56,7 @@ class NewConversationViewController: UIViewController {
                                                             style: .done,
                                                             target: self,
                                                             action: #selector(dismissSelf))
-        //searchBar.becomeFirstResponder()
+        searchBar.becomeFirstResponder()
     }
     
     override func viewDidLayoutSubviews() {
@@ -83,6 +86,11 @@ extension NewConversationViewController: UITableViewDelegate, UITableViewDataSou
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
+        let targetUserData = results[indexPath.row]
+        dismiss(animated: true, completion: { [weak self] in
+            self?.completion?(targetUserData)
+        })
+        
     }
 }
 
@@ -92,8 +100,12 @@ extension NewConversationViewController: UISearchBarDelegate {
         guard let text = searchBar.text, !text.replacingOccurrences(of: " ", with: "").isEmpty else {
             return
         }
+        
         searchBar.resignFirstResponder()
         results.removeAll()
+        
+        spinner.show(in: view)
+
         self.searchUsers(query: text)
     }
     
@@ -120,13 +132,14 @@ extension NewConversationViewController: UISearchBarDelegate {
             return
         }
         
+        self.spinner.dismiss()
+        
         let results: [[String: String]] = self.users.filter({
             guard let name = $0["name"]?.lowercased() else {
                 return false
             }
             return name.hasPrefix(term.lowercased())
         })
-        
         self.results = results
         
         updateUI()
