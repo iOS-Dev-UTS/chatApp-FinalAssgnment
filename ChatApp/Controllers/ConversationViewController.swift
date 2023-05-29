@@ -67,6 +67,7 @@ class ConversationViewController: UIViewController {
                     print("successfully got conversation models")
                     return
                 }
+                print("successfully got conversation models")
                 self?.conversations = conversations
                 
                 DispatchQueue.main.async {

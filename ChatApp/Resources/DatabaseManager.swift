@@ -247,11 +247,12 @@ extension DatabaseManager {
     }
     
     public func getAllConversations(for email: String, completion: @escaping (Result<[Conversation], Error>) -> Void) {
-        database.child("\(email)/conversations").observe(.value, with: {snapshot in
             guard let value = snapshot.value as? [[String:Any]] else {
                 completion(.failure(DatabaseError.failedToFetch))
                 return
             }
+            
+            print("test")
             
             let conversations: [Conversation] = value.compactMap({ dictionary in
                             guard let conversationId = dictionary["id"] as? String,
@@ -268,7 +269,7 @@ extension DatabaseManager {
                 
                 return Conversation(id: conversationId, name: name, otherUserEmail: otherUserEmail, latestMessage: latestMessageObject)
             })
-            
+            print("test 2")
             completion(.success(conversations))
         })
     }
