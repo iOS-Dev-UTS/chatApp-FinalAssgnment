@@ -22,6 +22,8 @@
 		30A94AA02A05C49F00AB78C9 /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30A94A9F2A05C49F00AB78C9 /* ProfileViewController.swift */; };
 		30A94AA32A05CCD900AB78C9 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30A94AA22A05CCD900AB78C9 /* Extensions.swift */; };
 		30A94AA52A062EA400AB78C9 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 30A94AA42A062EA400AB78C9 /* GoogleService-Info.plist */; };
+		605DDB512A1F73D90021B21D /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 605DDB502A1F73D90021B21D /* SettingsViewController.swift */; };
+		605DDB532A1F740A0021B21D /* DarkModeManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 605DDB522A1F740A0021B21D /* DarkModeManager.swift */; };
 		BCC892CC2A1E4DE0002FD8C0 /* ChatViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCC892CB2A1E4DE0002FD8C0 /* ChatViewController.swift */; };
 		BCC892CE2A1E69D4002FD8C0 /* StorageManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCC892CD2A1E69D4002FD8C0 /* StorageManager.swift */; };
 		BCC892D02A223573002FD8C0 /* ConversationTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCC892CF2A223573002FD8C0 /* ConversationTableViewCell.swift */; };
@@ -47,6 +49,8 @@
 		30A94AA22A05CCD900AB78C9 /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		30A94AA42A062EA400AB78C9 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		5B7E3BE929A2D83E0A4E73A5 /* Pods-ChatApp.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ChatApp.debug.xcconfig"; path = "Target Support Files/Pods-ChatApp/Pods-ChatApp.debug.xcconfig"; sourceTree = "<group>"; };
+		605DDB502A1F73D90021B21D /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
+		605DDB522A1F740A0021B21D /* DarkModeManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DarkModeManager.swift; sourceTree = "<group>"; };
 		892D4BB93D9AA1018FB47E45 /* Pods_ChatApp.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ChatApp.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		B51852BEE6D30FEF726D5C01 /* Pods-ChatApp.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ChatApp.release.xcconfig"; path = "Target Support Files/Pods-ChatApp/Pods-ChatApp.release.xcconfig"; sourceTree = "<group>"; };
 		BCC892CB2A1E4DE0002FD8C0 /* ChatViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatViewController.swift; sourceTree = "<group>"; };
@@ -107,6 +111,8 @@
 				30A94A9D2A05C48F00AB78C9 /* NewConversationViewController.swift */,
 				30A94A9F2A05C49F00AB78C9 /* ProfileViewController.swift */,
 				BCC892CB2A1E4DE0002FD8C0 /* ChatViewController.swift */,
+				605DDB502A1F73D90021B21D /* SettingsViewController.swift */,
+				605DDB522A1F740A0021B21D /* DarkModeManager.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -297,11 +303,13 @@
 				30A94A9E2A05C48F00AB78C9 /* NewConversationViewController.swift in Sources */,
 				30A94A982A05C43800AB78C9 /* RegisterViewController.swift in Sources */,
 				30A94A812A05C0D700AB78C9 /* ConversationViewController.swift in Sources */,
+				605DDB532A1F740A0021B21D /* DarkModeManager.swift in Sources */,
 				30A94AA32A05CCD900AB78C9 /* Extensions.swift in Sources */,
 				30A94A7D2A05C0D700AB78C9 /* AppDelegate.swift in Sources */,
 				30A94AA02A05C49F00AB78C9 /* ProfileViewController.swift in Sources */,
 				30A94A7F2A05C0D700AB78C9 /* SceneDelegate.swift in Sources */,
 				BCC892D02A223573002FD8C0 /* ConversationTableViewCell.swift in Sources */,
+				605DDB512A1F73D90021B21D /* SettingsViewController.swift in Sources */,
 				BCC892CC2A1E4DE0002FD8C0 /* ChatViewController.swift in Sources */,
 				30A94A9A2A05C45600AB78C9 /* PhotoViewerViewController.swift in Sources */,
 				BCC892CE2A1E69D4002FD8C0 /* StorageManager.swift in Sources */,

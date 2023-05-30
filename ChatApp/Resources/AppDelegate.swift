@@ -15,6 +15,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
         FirebaseApp.configure()
+        
+        if let isDarkModeEnabled = UserDefaults.standard.object(forKey: "isDarkModeEnabled") as? Bool {
+            DarkModeManager.shared.isDarkModeEnabled = isDarkModeEnabled
+        } else {
+            DarkModeManager.shared.isDarkModeEnabled = false
+        }
+        //Set the initial appearance
+        DarkModeManager.shared.updateAppearance()
+        
         return true
     }
     

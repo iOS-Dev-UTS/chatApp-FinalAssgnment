@@ -2,7 +2,7 @@
 //  RegisterViewController.swift
 //  ChatApp
 //
-//  Created by 安達さくら on 2023/05/06.
+//  Created by Sakura Adachi on 2023/05/06.
 //
 
 import UIKit
@@ -13,7 +13,6 @@ class RegisterViewController: UIViewController {
     
     private let spinner = JGProgressHUD(style: .dark)
 
-    
     // container
     private let scrollView: UIScrollView = {
         let scrollView = UIScrollView()
@@ -43,7 +42,7 @@ class RegisterViewController: UIViewController {
         field.placeholder = "First Name"
         field.leftView = UIView(frame: CGRect(x: 0, y:0, width: 5, height: 0))
         field.leftViewMode = .always
-        field.backgroundColor = .white
+        field.backgroundColor = .secondarySystemBackground
         return field
     }()
     
@@ -58,7 +57,7 @@ class RegisterViewController: UIViewController {
         field.placeholder = "Last Name"
         field.leftView = UIView(frame: CGRect(x: 0, y:0, width: 5, height: 0))
         field.leftViewMode = .always
-        field.backgroundColor = .white
+        field.backgroundColor = .secondarySystemBackground
         return field
     }()
     
@@ -73,7 +72,7 @@ class RegisterViewController: UIViewController {
         field.placeholder = "Email Address"
         field.leftView = UIView(frame: CGRect(x: 0, y:0, width: 5, height: 0))
         field.leftViewMode = .always
-        field.backgroundColor = .white
+        field.backgroundColor = .secondarySystemBackground
         return field
     }()
     
@@ -88,7 +87,7 @@ class RegisterViewController: UIViewController {
         field.placeholder = "Password"
         field.leftView = UIView(frame: CGRect(x: 0, y:0, width: 5, height: 0))
         field.leftViewMode = .always
-        field.backgroundColor = .white
+        field.backgroundColor = .secondarySystemBackground
         field.isSecureTextEntry = true
         return field
     }()
@@ -107,7 +106,7 @@ class RegisterViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         title = "Register"
-        view.backgroundColor = .white
+        view.backgroundColor = .systemBackground
         
         // go to the Register View
         navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Register", style: .done, target: self, action: #selector(didTapRegister))
@@ -306,4 +305,5 @@ extension RegisterViewController: UIImagePickerControllerDelegate, UINavigationC
     func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
         picker.dismiss(animated: true, completion: nil)
     }
+    
 }
