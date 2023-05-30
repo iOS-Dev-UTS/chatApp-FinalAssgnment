@@ -8,17 +8,16 @@
 import UIKit
 import Firebase
 import FirebaseAuth
-import FirebaseStorage
 import GoogleSignIn
 import SDWebImage
 
 
-enum ProfileModelType {
+enum ProfileViewModelType {
     case info
 }
 
-struct ProfileModel {
-    let modelType: ProfileModelType
+struct ProfileViewModel {
+    let modelType: ProfileViewModelType
     let title: String
     let handler: (() ->Void)?
 }
@@ -27,32 +26,31 @@ class ProfileViewController: UIViewController {
     
     @IBOutlet var tableview: UITableView!
     
-    var data = [ProfileModel]()
+    var data = [ProfileViewModel]()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         tableview.register(ProfileTableViewCell.self, forCellReuseIdentifier: ProfileTableViewCell.identifier)
-        
-        
-    
-
-        data.append(ProfileModel(modelType: .info, title: "Name: \(UserDefaults.standard.value(forKey: "name") as? String ?? "No Name")", handler: nil))
-        data.append(ProfileModel(modelType: .info, title: "Email: \(UserDefaults.standard.value(forKey: "email") as? String ?? "No Email")", handler: nil))
+                
+        data.append(ProfileViewModel(modelType: .info, title: "Name: \(UserDefaults.standard.value(forKey: "name") as? String ?? "No Name")", handler: nil))
+        data.append(ProfileViewModel(modelType: .info, title: "Email: \(UserDefaults.standard.value(forKey: "email") as? String ?? "No Email")", handler: nil))
         
         tableview.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
         tableview.delegate = self
         tableview.dataSource = self
         tableview.tableHeaderView = createTableHeader()
 
+        
+
     }
+ 
     
     func createTableHeader() -> UIView? {
         guard let email = UserDefaults.standard.value(forKey: "email") as? String else {
             return nil
         }
-       
-    
+        
         let validEmail = DatabaseManager.validEmail(emailAddress: email)
         let filename = validEmail + "_profile_picture.png"
         
@@ -107,7 +105,6 @@ extension ProfileViewController: UITableViewDelegate, UITableViewDataSource{
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let viewModel = data[indexPath.row]
-   
         let cell = tableView.dequeueReusableCell(withIdentifier: ProfileTableViewCell.identifier, for: indexPath) as! ProfileTableViewCell
         
         cell.setUp(with: viewModel)
@@ -122,24 +119,17 @@ extension ProfileViewController: UITableViewDelegate, UITableViewDataSource{
 }
 
 class ProfileTableViewCell: UITableViewCell {
-    
+
     static let identifier = "ProfileTableViewCell"
-    
-    private var viewModel: ProfileModel?
-    
-    public func setUp(with viewModel: ProfileModel) {
+
+    private var viewModel: ProfileViewModel?
+
+    public func setUp(with viewModel: ProfileViewModel) {
+          
         self.viewModel = viewModel
         self.textLabel?.textAlignment = .left
         selectionStyle = .none
-        
+
         self.textLabel?.text = viewModel.title
-        if viewModel.modelType == .info{
-            //            let titleComponents = viewModel.title.components(separatedBy: ": ")
-            //            if titleComponents.count == 2 {
-            //                self.textLabel?.text = titleComponents[1]
-            //            } else {
-            //                self.textLabel?.text = viewModel.title
-            //            }
-        }
     }
 }
