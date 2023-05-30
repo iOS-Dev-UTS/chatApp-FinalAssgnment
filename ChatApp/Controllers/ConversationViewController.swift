@@ -2,7 +2,7 @@
 //  ViewController.swift
 //  ChatApp
 //
-//  Created by 安達さくら on 2023/05/06.
+//  Created by Sakura Adachi on 2023/05/06.
 //
 
 import UIKit

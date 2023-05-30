@@ -2,28 +2,49 @@
 //  ProfileViewController.swift
 //  ChatApp
 //
-//  Created by 安達さくら on 2023/05/06.
+//  Created by Sakura Adachi on 2023/05/06.
 //
 
 import UIKit
+import Firebase
 import FirebaseAuth
 import GoogleSignIn
+import SDWebImage
+
+
+enum ProfileViewModelType {
+    case info
+}
+
+struct ProfileViewModel {
+    let modelType: ProfileViewModelType
+    let title: String
+    let handler: (() ->Void)?
+}
 
 class ProfileViewController: UIViewController {
     
     @IBOutlet var tableview: UITableView!
     
-    let data = ["Log Out"]
+    var data = [ProfileViewModel]()
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        tableview.register(ProfileTableViewCell.self, forCellReuseIdentifier: ProfileTableViewCell.identifier)
+                
+        data.append(ProfileViewModel(modelType: .info, title: "Name: \(UserDefaults.standard.value(forKey: "name") as? String ?? "No Name")", handler: nil))
+        data.append(ProfileViewModel(modelType: .info, title: "Email: \(UserDefaults.standard.value(forKey: "email") as? String ?? "No Email")", handler: nil))
+        
         tableview.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
         tableview.delegate = self
         tableview.dataSource = self
         tableview.tableHeaderView = createTableHeader()
 
-        // Do any additional setup after loading the view.
+        
+
     }
+ 
     
     func createTableHeader() -> UIView? {
         guard let email = UserDefaults.standard.value(forKey: "email") as? String else {
@@ -36,7 +57,7 @@ class ProfileViewController: UIViewController {
         let path = "images/" + filename
         
         let headerView = UIView(frame: CGRect(x: 0, y: 0, width: self.view.width, height: 300))
-        headerView.backgroundColor = .link
+        headerView.backgroundColor = .secondarySystemBackground
         
         let imageView = UIImageView(frame: CGRect(x: (headerView.width-150)/2, y: 75, width: 150, height: 150))
         
@@ -48,7 +69,7 @@ class ProfileViewController: UIViewController {
         imageView.layer.cornerRadius = imageView.width/2
 
         headerView.addSubview(imageView)
-        
+
         StorageManager.shared.downloadURL(for: path, completion: { [weak self] result in
             switch result {
             case .success(let url):
@@ -58,7 +79,9 @@ class ProfileViewController: UIViewController {
             }
         })
         
+        //tableview.reloadData()
         return headerView
+        
     }
     
     func downloadImage(imageView: UIImageView, url: URL) {
@@ -81,38 +104,32 @@ extension ProfileViewController: UITableViewDelegate, UITableViewDataSource{
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
-        cell.textLabel?.text = data[indexPath.row]
-        cell.textLabel?.textAlignment = .center
-        cell.textLabel?.textColor = .red
+        let viewModel = data[indexPath.row]
+        let cell = tableView.dequeueReusableCell(withIdentifier: ProfileTableViewCell.identifier, for: indexPath) as! ProfileTableViewCell
+        
+        cell.setUp(with: viewModel)
         return cell
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
+        data[indexPath.row].handler?()
+    
     }
-//        let actionSheet = UIAlertController(title: "", message: "", preferredStyle: .actionSheet)
-//        actionSheet.addAction(UIAlertAction(title: "Log Out", style: .destructive, handler: { [weak self] _ in
-//            guard let strongSelf = self else {
-//                return
-//            }
-//
-//            // Log Out Google
-//            GIDSignIn.sharedInstance.signOut()
-//
-//            do {
-//                try FirebaseAuth.Auth.auth().signOut()
-//                let vc = LoginViewController()
-//                let nav = UINavigationController(rootViewController: vc)
-//                nav.modalPresentationStyle = .fullScreen
-//                strongSelf.present(nav, animated: true)
-//            } catch {
-//                print("Failed to Log Out")
-//            }
-//        }))
-//
-//        actionSheet.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
-//        present(actionSheet, animated: true)
-//
-//    }
+}
+
+class ProfileTableViewCell: UITableViewCell {
+
+    static let identifier = "ProfileTableViewCell"
+
+    private var viewModel: ProfileViewModel?
+
+    public func setUp(with viewModel: ProfileViewModel) {
+          
+        self.viewModel = viewModel
+        self.textLabel?.textAlignment = .left
+        selectionStyle = .none
+
+        self.textLabel?.text = viewModel.title
+    }
 }

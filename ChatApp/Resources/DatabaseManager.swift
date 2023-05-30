@@ -23,6 +23,21 @@ final class DatabaseManager {
     }
 }
 
+extension DatabaseManager {
+
+    /// Returns dictionary node at child path
+    public func getDataFor(path: String, completion: @escaping (Result<Any, Error>) -> Void) {
+        database.child("\(path)").observeSingleEvent(of: .value) { snapshot in
+            guard let value = snapshot.value else {
+                completion(.failure(DatabaseError.failedToFetch))
+                return
+            }
+            completion(.success(value))
+        }
+    }
+
+}
+
 // MARK: - Account Management
 extension DatabaseManager {
     ///
@@ -49,7 +64,7 @@ extension DatabaseManager {
     public func insertUser(with user: ChatAppUser, completion: @escaping (Bool) -> Void){
         database.child(user.validEmail).setValue([
             "first_name": user.firstName,
-            "last_name": user.lastName
+            "last_name": user.lastName,
         ], withCompletionBlock: {error, _ in
             guard error == nil else {
                 print("Failed to write to Firebase")
@@ -275,7 +290,7 @@ struct ChatAppUser {
     let firstName: String
     let lastName: String
     let emailAddress: String
-    // let profilePicUrl: String
+    //let profilePicUrl: String
     
     // Insert safe email to insert
     var validEmail: String {
