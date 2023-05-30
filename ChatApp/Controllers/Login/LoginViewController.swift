@@ -2,7 +2,7 @@
 //  LoginViewController.swift
 //  ChatApp
 //
-//  Created by 安達さくら on 2023/05/06.
+//  Created by Sakura Adachi on 2023/05/06.
 //
 
 import UIKit
@@ -146,6 +146,7 @@ class LoginViewController: UIViewController {
             }
             
             UserDefaults.standard.set(email, forKey: "email")
+            UserDefaults.standard.set("\(firstName) \(lastName)", forKey: "name")
             
             DatabaseManager.shared.isUserExists(with: email, completion: { exists in
                 if !exists{
@@ -209,11 +210,8 @@ class LoginViewController: UIViewController {
         
         spinner.show(in: view)
         
-        // Firebase Log In with email and password
-        FirebaseAuth.Auth.auth().signIn(withEmail: email, password: password, completion: {[weak self] authResult, error in
-            
-            // pass RegisterViewController instance as weak self to avoid circular reference
-            // make sure weak self is not null
+        // Firebase Log In
+        Auth.auth().signIn(withEmail: email, password: password){ [weak self] authResult, error in
             guard let strongSelf = self else {
                 return
             }
@@ -222,20 +220,36 @@ class LoginViewController: UIViewController {
                 strongSelf.spinner.dismiss()
             }
             
-            guard let result = authResult, error == nil else{
-                print("Failed to login use with email \(email)")
+            guard let result = authResult, error == nil else {
+                print("Failed to log in user with email: \(email)")
                 return
             }
-            let user = result.user
-
-            UserDefaults.standard.set(email, forKey: "email")
-
-            print("Logged in User: \(user)")
             
-            // Go to Conversation screen
+            let user = result.user
+            
+            let safeEmail = DatabaseManager.validEmail(emailAddress: email)
+            DatabaseManager.shared.getDataFor(path: safeEmail, completion: { result in
+                switch result {
+                case .success(let data):
+                    guard let userData = data as? [String: Any],
+                          let firstName = userData["first_name"] as? String,
+                          let lastName = userData["last_name"] as? String else {
+                        return
+                    }
+                    UserDefaults.standard.set("\(firstName) \(lastName)", forKey: "name")
+                    
+                case .failure(let error):
+                    print("Failed to read data with error \(error)")
+                }
+            })
+            
+            UserDefaults.standard.set(email, forKey: "email")
+            
+            print("Logged In User: \(user)")
             strongSelf.navigationController?.dismiss(animated: true, completion: nil)
-        })
+        }
     }
+    
     
     func alertUseLoginError() {
         let alert = UIAlertController(title: "Oops!", message: "Please enter all the valid information to proceed.", preferredStyle: .alert)
@@ -263,5 +277,5 @@ extension LoginViewController: UITextFieldDelegate {
         return true
     }
     
-
+    
 }
