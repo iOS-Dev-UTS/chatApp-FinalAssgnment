@@ -60,6 +60,7 @@ class ChatViewController: MessagesViewController {
     }()
     
     public var isNewConversation = false
+    public let conversationId: String?
     public let otherUserEmail: String
     
     private var messages = [Message]()
@@ -72,9 +73,14 @@ class ChatViewController: MessagesViewController {
         return Sender(photoURL: "", senderId: email, displayName: "John Smith")
     }
     
-    init(with email: String) {
+    init(with email: String, id: String?) {
+        self.conversationId = id
         self.otherUserEmail = email
         super.init(nibName: nil, bundle: nil)
+        print("conversationId while init \(conversationId ?? "no conversationId")")
+        if let conversationId = conversationId {
+            listenForMessages(id: conversationId)
+        }
     }
     
     required init?(coder: NSCoder) {
@@ -85,18 +91,45 @@ class ChatViewController: MessagesViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-//        messages.append(Message(sender: selfSender, messageId: "1", sentDate: Date(), kind: .text("Hello World")))
-//        
-//        messages.append(Message(sender: selfSender, messageId: "2", sentDate: Date(), kind: .text("Hello World Hello World Hello World Hello World")))
-//
+
         view.backgroundColor = .red
         
+        if let conversationId = conversationId {
+            listenForMessages(id: conversationId)
+        }
         messagesCollectionView.messagesDataSource = self
         messagesCollectionView.messagesLayoutDelegate = self
         messagesCollectionView.messagesDisplayDelegate = self
         messageInputBar.delegate = self
         
+    }
+    
+    private func listenForMessages(id: String) {
+        DatabaseManager.shared.getAllMessagesForConversation(with: id, completion: { [weak self] result in
+            switch result {
+            case .success(let messages):
+                guard !messages.isEmpty else {
+                    print("conversationId in listenForMessages\(id)")
+                    print("messages is empty")
+                    return
+                }
+                
+                print("Messages in listenForMessages: \(messages)")
+                
+                self?.messages = messages
+                print("self.messages in listenForMessages: \(self?.messages)")
+                
+                DispatchQueue.main.async{
+                    self?.messagesCollectionView.reloadDataAndKeepOffset()
+                }
+                
+                print("successfully listen for messages")
+                
+            case .failure(let error):
+                print ("failed to get messages: \(error)")
+                
+            }
+        })
     }
 
     override func viewDidAppear(_ animated: Bool) {
@@ -160,7 +193,6 @@ extension ChatViewController: MessagesDataSource, MessagesLayoutDelegate, Messag
             return sender
         }
         fatalError("Self sender is nil")
-        return Sender(photoURL: "", senderId: "0", displayName: "")
     }
     
     func messageForItem(at indexPath: IndexPath, in messagesCollectionView: MessageKit.MessagesCollectionView) -> MessageKit.MessageType {

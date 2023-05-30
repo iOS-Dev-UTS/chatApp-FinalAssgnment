@@ -271,7 +271,7 @@ extension DatabaseManager {
                 return
             }
             
-            print("test")
+            print("get all conversations called")
             
             let conversations: [Conversation] = value.compactMap({ dictionary in
                             guard let conversationId = dictionary["id"] as? String,
@@ -286,14 +286,44 @@ extension DatabaseManager {
                 
                 let latestMessageObject = LatestMessage(date: date, text: message, isRead: isRead)
                 
+                print("conversationId in DatabaseManager \(conversationId)")
+                
                 return Conversation(id: conversationId, name: name, otherUserEmail: otherUserEmail, latestMessage: latestMessageObject)
             })
-            print("test 2")
+            print("get all conversations successfully")
             completion(.success(conversations))
         })
     }
     
-    public func getAllMessagesForConversation(with id: String, completion: @escaping (Result<String, Error>) -> Void) {
+    public func getAllMessagesForConversation(with id: String, completion: @escaping (Result<[Message], Error>) -> Void) {
+        database.child("\(id)/messages").observe(.value, with: { snapshot in
+            guard let value = snapshot.value as? [[String:Any]] else {
+                completion(.failure(DatabaseError.failedToFetch))
+                return
+            }
+            
+            print("get all messages called")
+            
+            let messages: [Message] = value.compactMap({ dictionary in
+                   guard let name = dictionary["name"] as? String,
+                         let isRead = dictionary["is_read"] as? Bool,
+                         let messageID = dictionary["id"] as? String,
+                         let content = dictionary["content"] as? String,
+                         let senderEmail = dictionary["sender_email"] as? String,
+                         let type = dictionary["type"] as? String,
+                         let dateString = dictionary["date"] as? String,
+                         let date = ChatViewController.dateFormatter.date(from: dateString) else {
+                       return nil
+                   }
+                let sender = Sender(photoURL: "", senderId: senderEmail, displayName: name)
+                
+                print("messageID: \(messageID)")
+                
+                return Message(sender: sender, messageId: messageID, sentDate: date, kind: .text(content))
+            })
+            print("get all messages called success")
+                        completion(.success(messages))
+        })
         
     }
     
